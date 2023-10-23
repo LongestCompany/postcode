@@ -23,17 +23,17 @@
     function execDaumPostcode() {
       new daum.Postcode({
         oncomplete: function(data) {
-          var jibunAddress = ""
-
-          if (data.jibunAddress == "") {
-            jibunAddress = data.autoJibunAddress
-          } else if (data.autoJibunAddress == "") {
-            jibunAddress = data.jibunAddress
-          }
+          var address = ""
+            
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                address = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                address = data.jibunAddress;
+            }
 
           var postData = {
-              roadAddress : data.roadAddress,
-              jibunAddress : jibunAddress,
+              address : address,
               zonecode : data.zonecode
           };
           window.postMessageToiOS(postData);
